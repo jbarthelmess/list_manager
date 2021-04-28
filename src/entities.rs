@@ -9,7 +9,7 @@ pub struct List {
     pub list_owner: String
 }
 
-#[derive(Serialize, Deserialize, PostgresMapper)]
+#[derive(Serialize, Deserialize, PostgresMapper, Debug)]
 #[pg_mapper(table="list_item")]
 pub struct ListItem {
     pub list_item_id: i32,

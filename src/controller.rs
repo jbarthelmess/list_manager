@@ -19,14 +19,14 @@ pub async fn create_list(db_pool: web::Data<Pool>, req_body: web::Json<List>) ->
     Ok(HttpResponse::Created().json(new_list))
 }
 
-#[get("/lists/{list_id}")]
+#[get("/lists/{list_id}/list_items")]
 pub async fn get_list_items(db_pool: web::Data<Pool>, web::Path((list_id,)): web::Path<(i32,)>) -> Result<HttpResponse, ListError> {
     let pg_client: Client = db_pool.get().await.map_err(ListError::PoolError)?;
     let list_items = db::get_list_items(&pg_client, list_id).await?;
     Ok(HttpResponse::Ok().json(list_items))
 }
 
-#[post("/lists/{list_id}")]
+#[post("/lists/{list_id}/list_items")]
 pub async fn create_list_item(db_pool: web::Data<Pool>, web::Path((list_id,)): web::Path<(i32,)>, list_item: web::Json<ListItem>) -> Result<HttpResponse, ListError> {
     let pg_client: Client = db_pool.get().await.map_err(ListError::PoolError)?;
     let mut new_item = list_item.into_inner();

@@ -30,14 +30,15 @@ pub async fn create_new_list(client: &Client, new_list: List) -> Result<List, Li
 }
 
 pub async fn get_list_items(client: &Client, list_id: i32) -> Result<Vec<ListItem>, ListError> {
-    let stmt = "SELECT * FROM list_item WHERE list_id = $1;";
+    let stmt = "SELECT * FROM list_item WHERE list_item.list_id = $1;";
     let stmt = client.prepare(&stmt).await.unwrap();
-    Ok(client
+    let list_items = client
         .query(&stmt, &[&list_id])
         .await?
         .iter()
         .map(|row| ListItem::from_row_ref(row).unwrap())
-        .collect())
+        .collect();
+    Ok(list_items)
 }
 
 pub async fn create_list_item(client: &Client, new_item: ListItem) -> Result<ListItem, ListError> {
