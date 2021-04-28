@@ -1,11 +1,11 @@
 use actix_web::{HttpServer, App};
 use dotenv::dotenv;
 use tokio_postgres::NoTls;
-//pub mod entities;
+pub mod entities;
 mod db;
-//mod controller;
+mod controller;
 mod config;
-//pub mod error;
+pub mod error;
 
 #[actix_web::main]
 async fn main() -> std::io::Result<()>{
@@ -15,7 +15,7 @@ async fn main() -> std::io::Result<()>{
     let pool = config.pg.create_pool(NoTls).unwrap();
     HttpServer::new(move || App::new()
         .data(pool.clone())
-        // .service(controller::get_clients)
+        .service(controller::get_lists)
         // .service(controller::get_client)
         // .service(controller::create_client)
         // .service(controller::create_account)
